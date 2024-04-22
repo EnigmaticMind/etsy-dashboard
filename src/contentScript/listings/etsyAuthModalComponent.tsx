@@ -19,15 +19,17 @@ function EtsyAuthModalComponent() {
 
   // receiveComponentAction
   function receiveComponentAction(request: any, _: any, sendResponse: any) {
-    console.log(`Receiving component action: ${request.action}`)
-    switch (request.action) {
-      case rAuthPermPopUp:
-        setOpen(true)
-        setCb(() => sendResponse)
-        break
-    }
-
-    return true
+    return new Promise(function (resolve, reject) {
+      console.log(`Receiving component action: ${request.action}`)
+      switch (request.action) {
+        case rAuthPermPopUp:
+          setOpen(true)
+          setCb(() => (tx: any) => {
+            resolve(sendResponse(tx))
+          })
+          break
+      }
+    })
   }
 
   useEffect(() => {

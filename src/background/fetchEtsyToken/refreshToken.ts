@@ -1,4 +1,6 @@
-import { IToken, etsyTokenURL, storageTokenName } from '../../constants/authentication'
+import { etsyTokenURL, storageTokenName } from '../../constants/authentication'
+import { IToken } from './index'
+import { clientID } from '../../constants/authentication'
 import { sendSnackbar, genericError } from '../messaging'
 
 async function refreshToken(token: IToken): Promise<IToken> {
@@ -11,6 +13,8 @@ async function refreshToken(token: IToken): Promise<IToken> {
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': clientID,
+        Authorization: `Bearer ${token.access_token}`,
       },
       body: JSON.stringify({
         grant_type: 'refresh_token',

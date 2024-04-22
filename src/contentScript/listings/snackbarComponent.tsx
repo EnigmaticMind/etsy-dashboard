@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Snackbar from '@mui/joy/Snackbar'
-import Box from '@mui/joy/Box'
 import { snackbarAction } from '../../constants/global'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 

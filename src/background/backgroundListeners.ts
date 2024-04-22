@@ -1,17 +1,13 @@
 import { rAuthFetchToken } from '../constants/authentication'
 import { rFetchListings } from '../constants/global'
+import getListings from './getListings'
 
-import fetchEtsyToken from './fetchEtsyToken/index'
-import fetchListings from './fetchListings/index'
-
-chrome.runtime.onMessage.addListener(async function (request, _, sendResponse) {
-  console.log(`Receiving request type: ${request.type}`)
+chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
   switch (request.type) {
-    case rAuthFetchToken:
-      sendResponse(await fetchEtsyToken())
-      break
     case rFetchListings:
-      sendResponse(await fetchListings())
+      getListings().then((listings) => sendResponse(listings))
       break
   }
+
+  return true
 })

@@ -6,9 +6,8 @@ import {
   etsyConnectURL,
   etsyTokenURL,
   storageTokenName,
-  IToken,
 } from '../../constants/authentication'
-
+import { IToken } from './index'
 import { sendSnackbar, genericError } from '../messaging'
 
 // Start: Code Verifier
@@ -46,15 +45,15 @@ async function generateCodeChallengeFromVerifier(codeVerifier: string) {
 // End: Code Verifier
 
 export default async function beginAuthFlow(): Promise<IToken> {
-  console.log(`Begin Auth Flow`)
   return new Promise(async function (resolve, reject) {
+    console.log(`Begin Auth Flow`)
     const redirectURL = chrome.identity.getRedirectURL('auth')
     const codeVerifier = generateCodeVerifier()
 
     const authParams: any = {
       response_type: 'code',
       redirect_uri: redirectURL,
-      scope: authScopes,
+      scope: authScopes.join('%20'),
       client_id: clientID,
       code_challenge: await generateCodeChallengeFromVerifier(codeVerifier),
       code_challenge_method: codeChallengeMethod,
@@ -95,7 +94,8 @@ export default async function beginAuthFlow(): Promise<IToken> {
         const body = await response.json()
 
         // Set expiration time
-        body.expires_on = Date.now() + body.expires_in
+        body.expires_on = Date.now() + body.expires_in * 1000
+        console.log(`Response to auth flow ${JSON.stringify(body)}`)
 
         // Extract the access token from the response access_token data field
         if (response.ok) {
@@ -103,6 +103,7 @@ export default async function beginAuthFlow(): Promise<IToken> {
           resolve(body)
         }
       } catch (err) {
+        console.log(err)
         reject(sendSnackbar(genericError))
       }
     })
