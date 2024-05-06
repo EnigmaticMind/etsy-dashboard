@@ -2,7 +2,7 @@ import fetchEtsyToken, { IToken } from './../fetchEtsyToken'
 
 import { etsyBaseURL } from './../../constants/global'
 import { clientID } from './../../constants/authentication'
-import { sendSnackbar, genericError } from '../messaging'
+import { sendSnackbar, genericError } from '../actionMessaging'
 
 export interface IMe {
   user_id: number

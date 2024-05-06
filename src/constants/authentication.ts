@@ -1,6 +1,3 @@
-export const rAuthFetchToken = 'ETSYAUTHTOKEN'
-export const rAuthPermPopUp = 'ETSYAUTHPOP'
-
 export const storageTokenName = 'userToken'
 
 export const authScopes = ['listings_r', 'listings_w', 'shops_r']

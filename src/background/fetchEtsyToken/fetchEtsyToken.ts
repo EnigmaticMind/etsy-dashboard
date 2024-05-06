@@ -1,4 +1,5 @@
-import { rAuthPermPopUp, storageTokenName } from '../../constants/authentication'
+import { storageTokenName } from '../../constants/authentication'
+import { popAuthAction } from '../../constants/global'
 import beginAuthFlow from './beginAuthFlow'
 import refreshToken from './refreshToken'
 
@@ -17,11 +18,9 @@ async function requestAuthPopup() {
     chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       // TODO: Better handler of no tab?
       const res = await chrome.tabs.sendMessage(tabs[0].id ?? 0, {
-        action: rAuthPermPopUp,
+        action: popAuthAction,
       })
 
-      console.log(`Pop up response`)
-      console.log(res)
       resolve(res)
     })
   })
@@ -30,12 +29,16 @@ async function requestAuthPopup() {
 export default async function fetchEtsyToken(): Promise<IToken> {
   return new Promise(async function (resolve) {
     // Check session storage first for token
-    const res = await (chrome.storage.session.get() as Promise<any>)
+    const res = await (chrome.storage.local.get() as Promise<any>)
     let token = res[storageTokenName] as IToken
 
-    if (token?.expires_on && token.expires_on <= Date.now()) {
-      console.log(`Need to refresh token expired on ${token.expires_on}, currently ${Date.now()}`)
+    console.log(token)
+
+    // if (token && token?.expires_on && token.expires_on <= Date.now()) {
+    if (token) {
       token = await refreshToken(token)
+      console.log('~~ Refresh Token')
+      console.log(token)
     }
 
     if (!token?.access_token) {

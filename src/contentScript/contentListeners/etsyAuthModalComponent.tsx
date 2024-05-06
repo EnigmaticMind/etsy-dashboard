@@ -1,5 +1,4 @@
 import React from 'react'
-import { rAuthPermPopUp } from '../../constants/authentication'
 import { useEffect } from 'react'
 
 import Button from '@mui/joy/Button'
@@ -11,6 +10,7 @@ import ModalClose from '@mui/joy/ModalClose'
 import Typography from '@mui/joy/Typography'
 import Sheet from '@mui/joy/Sheet'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
+import { popAuthAction } from '../../constants/global'
 
 // EtsyAuthModalComponent
 function EtsyAuthModalComponent() {
@@ -20,9 +20,8 @@ function EtsyAuthModalComponent() {
   // receiveComponentAction
   function receiveComponentAction(request: any, _: any, sendResponse: any) {
     return new Promise(function (resolve, reject) {
-      console.log(`Receiving component action: ${request.action}`)
       switch (request.action) {
-        case rAuthPermPopUp:
+        case popAuthAction:
           setOpen(true)
           setCb(() => (tx: any) => {
             resolve(sendResponse(tx))

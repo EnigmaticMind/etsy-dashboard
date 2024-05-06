@@ -1,7 +1,7 @@
 import fetchEtsyToken, { IToken } from './../fetchEtsyToken'
 
 // import { listingsURL } from './../../constants/global'
-import { sendSnackbar, genericError } from '../messaging'
+import { sendSnackbar, genericError } from '../actionMessaging'
 import { clientID } from '../../constants/authentication'
 import { etsyBaseURL } from '../../constants/global'
 
@@ -9,7 +9,7 @@ enum Languages {
   'en-US',
 }
 
-export type ListingStatus = 'active' | 'inactive' | 'sold_out' | 'draft' | 'expired'
+export type ListingStatus = 'active' | 'inactive' | 'sold_out' | 'draft' | 'expired' | null
 
 export interface IListings {
   count: number
@@ -119,10 +119,10 @@ export interface IListing {
   who_made: string
 }
 
-// TODO: Adjust this based on input
 export default async function fetchListings(
-  state: ListingStatus = 'draft',
-  shop_id: number,
+  state: ListingStatus = null,
+  listing_id: string | null = null,
+  shop_id: number | null,
 ): Promise<IListings> {
   return new Promise(async function (resolve, reject) {
     const token: IToken = await fetchEtsyToken()
@@ -137,15 +137,25 @@ export default async function fetchListings(
       },
     }
 
-    try {
-      const response = await fetch(
+    let url: string = ''
+    if (listing_id) {
+      url =
+        `${etsyBaseURL}listings/batch?` +
+        new URLSearchParams({
+          listing_ids: listing_id,
+          includes: 'Inventory',
+        })
+    } else {
+      url =
         `${etsyBaseURL}shops/${shop_id}/listings?` +
-          new URLSearchParams({
-            state,
-            includes: 'Inventory',
-          }),
-        requestOptions,
-      )
+        new URLSearchParams({
+          state: state || 'draft',
+          includes: 'Inventory',
+        })
+    }
+
+    try {
+      const response = await fetch(url, requestOptions)
       resolve((await response.json()) as IListings)
     } catch (err) {
       reject(sendSnackbar(genericError))

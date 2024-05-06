@@ -1,7 +1,7 @@
 {
   "name": "etsy-dashboard",
-  "displayName": "Etsy Dashboard",
-  "version": "1.0.0",
+  "displayName": "Clipsy - Etsy Seller Tool",
+  "version": "0.1.0",
   "author": "Robbie Rice",
   "description": "",
   "type": "module",

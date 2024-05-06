@@ -5,6 +5,7 @@ import packageData from '../package.json'
 const isDev = process.env.NODE_ENV == 'development'
 
 const etsyListingsURL = 'www.etsy.com/your/shops/me/tools/listings/*'
+const etsyListingEditURL = 'www.etsy.com/your/shops/me/listing-editor/edit/*'
 
 function urlPrefixes(url: string): string[] {
   return [`https://${url}`, `http://${url}`]
@@ -48,16 +49,10 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: [...urlPrefixes(etsyListingsURL)],
-      js: [
-        'src/contentScript/listings/contentListeners.tsx',
-        'src/contentScript/listings/index.tsx',
-      ],
+      matches: [...urlPrefixes(etsyListingsURL), ...urlPrefixes(etsyListingEditURL)],
+      js: ['src/contentScript/contentListeners/index.tsx', 'src/contentScript/listings/index.tsx'],
     },
   ],
-  // side_panel: {
-  //   default_path: 'sidepanel.html',
-  // },
   icons: {
     16: 'img/logo-16.png',
     32: 'img/logo-34.png',
@@ -65,6 +60,7 @@ export default defineManifest({
     128: 'img/logo-128.png',
   },
   action: {
+    default_popup: 'popup.html',
     default_icon: 'img/logo-48.png',
   },
   web_accessible_resources: [

@@ -1,7 +1,7 @@
 import { etsyTokenURL, storageTokenName } from '../../constants/authentication'
 import { IToken } from './index'
 import { clientID } from '../../constants/authentication'
-import { sendSnackbar, genericError } from '../messaging'
+import { sendSnackbar, genericError } from '../actionMessaging'
 
 async function refreshToken(token: IToken): Promise<IToken> {
   return new Promise(async function (resolve, reject) {
@@ -18,7 +18,7 @@ async function refreshToken(token: IToken): Promise<IToken> {
       },
       body: JSON.stringify({
         grant_type: 'refresh_token',
-        client_id: token.refresh_token,
+        client_id: clientID,
         refresh_token: token.refresh_token,
       }),
     }
@@ -32,7 +32,7 @@ async function refreshToken(token: IToken): Promise<IToken> {
 
       // Extract the access token from the response access_token data field
       if (response.ok) {
-        await chrome.storage.session.set({ [storageTokenName]: body })
+        await chrome.storage.local.set({ [storageTokenName]: body })
         resolve(body)
       }
     } catch (err) {

@@ -8,7 +8,7 @@ import {
   storageTokenName,
 } from '../../constants/authentication'
 import { IToken } from './index'
-import { sendSnackbar, genericError } from '../messaging'
+import { sendSnackbar, genericError } from '../actionMessaging'
 
 // Start: Code Verifier
 function dec2hex(dec: any) {
@@ -99,11 +99,10 @@ export default async function beginAuthFlow(): Promise<IToken> {
 
         // Extract the access token from the response access_token data field
         if (response.ok) {
-          await chrome.storage.session.set({ [storageTokenName]: body })
+          await chrome.storage.local.set({ [storageTokenName]: body })
           resolve(body)
         }
       } catch (err) {
-        console.log(err)
         reject(sendSnackbar(genericError))
       }
     })

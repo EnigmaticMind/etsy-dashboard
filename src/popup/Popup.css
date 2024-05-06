@@ -5,12 +5,11 @@
 }
 
 main {
-  text-align: center;
   padding: 1em;
   margin: 0 auto;
 }
 
-h3 {
+/* h3 {
   color: #61dafb;
   text-transform: uppercase;
   font-size: 1.5rem;
@@ -50,4 +49,4 @@ a {
   margin: 0.5rem;
   color: #cccccc;
   text-decoration: none;
-}
+} */

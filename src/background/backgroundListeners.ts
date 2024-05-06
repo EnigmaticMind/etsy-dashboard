@@ -1,13 +1,16 @@
-import { rAuthFetchToken } from '../constants/authentication'
-import { rFetchListings } from '../constants/global'
-import getListings from './getListings'
-
-import { ListingStatus } from './fetchListings'
+import { FetchListingsMessageType, PutListingsMessageType } from '../constants/global'
+import getListingsCsv from './getListingsCsv'
+import putListingsCsv from './putListingsCsv'
 
 chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
   switch (request.type) {
-    case rFetchListings:
-      getListings(request.state || 'active').then((listings) => sendResponse(listings))
+    case FetchListingsMessageType:
+      getListingsCsv(request.state || null, request.listing_id || null).then((listings) =>
+        sendResponse(listings),
+      )
+      break
+    case PutListingsMessageType:
+      putListingsCsv(request.rows).then((json) => sendResponse(json))
       break
   }
 

@@ -1,5 +1,5 @@
 import EtsyAuthModalComponent from './etsyAuthModalComponent'
-import SnackbarComponent from './snackbarComponent'
+import SnackbarComponent from '../listings/snackbarComponent'
 
 // ContentListeners main entry point
 function ContentListenersComponent() {
