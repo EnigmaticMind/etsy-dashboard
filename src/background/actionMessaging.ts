@@ -1,6 +1,6 @@
 import { snackbarAction, startLoaderAction, stopLoaderAction } from '../constants/global'
 
-export const genericError = 'Problem connecting to etsy try again...'
+export const genericError = 'Problem connecting to Etsy try again...'
 
 export const sendSnackbar = async function (message: string) {
   chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {

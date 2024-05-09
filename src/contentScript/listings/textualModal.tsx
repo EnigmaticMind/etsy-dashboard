@@ -11,6 +11,7 @@ import Typography from '@mui/joy/Typography'
 import Sheet from '@mui/joy/Sheet'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
 import { popAuthAction } from '../../constants/global'
+import { ModalDialog } from '@mui/joy'
 
 // TextualModalComponent
 const TextualModalComponent: FC<{ children: JSX.Element; isOpen: boolean; setIsOpen: Function }> =
@@ -24,20 +25,13 @@ const TextualModalComponent: FC<{ children: JSX.Element; isOpen: boolean; setIsO
         aria-describedby="modal-desc"
         open={isOpen}
         onClose={handleClose}
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
-        <Sheet
-          variant="outlined"
-          sx={{
-            maxWidth: '80%',
-            borderRadius: 'md',
-            p: 3,
-            boxShadow: 'lg',
-          }}
-        >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
-          {children}
-        </Sheet>
+        {children}
       </Modal>
     )
   }

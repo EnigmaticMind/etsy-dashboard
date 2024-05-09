@@ -1,9 +1,9 @@
 import { etsyTokenURL, storageTokenName } from '../../constants/authentication'
-import { IToken } from './index'
+import { IToken } from './fetchEtsyToken'
 import { clientID } from '../../constants/authentication'
 import { sendSnackbar, genericError } from '../actionMessaging'
 
-async function refreshToken(token: IToken): Promise<IToken> {
+async function refreshToken(token: IToken): Promise<IToken | null> {
   return new Promise(async function (resolve, reject) {
     const tokenURL = etsyTokenURL
     console.log(`Refresh token`)
@@ -34,7 +34,9 @@ async function refreshToken(token: IToken): Promise<IToken> {
       if (response.ok) {
         await chrome.storage.local.set({ [storageTokenName]: body })
         resolve(body)
+        return
       }
+      reject(sendSnackbar(body?.error) || genericError)
     } catch (err) {
       reject(sendSnackbar(genericError))
     }

@@ -1,6 +1,11 @@
-import getMe, { IMe } from './getMe'
+import getMe, { IMe } from './etsyEndpoints/getMe'
 
-import fetchListings, { IListing, IListings, IProduct, ListingStatus } from './fetchListings'
+import fetchListings, {
+  IListing,
+  IListings,
+  IProduct,
+  ListingStatus,
+} from './etsyEndpoints/fetchListings'
 import Papa from 'papaparse'
 
 let decode = (str: any) => {
@@ -48,23 +53,26 @@ export default async function getListingsCsv(
 
       const csvSheet: any = []
       const headerSegments = [
-        ['Title', 'Description', 'Sku', 'Status', 'Quantity', 'Tags', 'Price'],
+        // Start segment array
+        ['Title', 'Description', 'SKU', 'Status', 'Quantity', 'Tags', 'Price', 'Currency Code'],
+        // Variation segment array
         [
-          'Variation Name 1',
-          'Variation Option 1',
-          'Variation Name 2',
-          'Variation Option 2',
-          'Variation SKU',
-          'Variation Quantity',
-          'Variation Price',
-          'Variation Enabled',
-          'Variation Product ID',
-          'Variation ID 1',
-          'Variation Option IDs 1',
-          'Variation ID 2',
-          'Variation Option IDs 2',
+          'Property Name 1',
+          'Property Option 1',
+          'Property Name 2',
+          'Property Option 2',
+          'Property SKU',
+          'Property Quantity',
+          'Property Price',
+          'Property Is Enabled',
+          'Property Product ID',
+          'Property ID 1',
+          'Property Option IDs 1',
+          'Property ID 2',
+          'Property Option IDs 2',
         ],
-        ['Listing ID'],
+        // Ending segment array
+        ['Product ID', 'Listing ID'],
       ]
 
       csvSheet.push(headerSegments.flat(2))
@@ -73,14 +81,20 @@ export default async function getListingsCsv(
         let row: any[] = [
           r.title,
           r.description,
-          r.inventory.sku_on_property.length === 0 ? r.skus : null,
+          r.inventory.sku_on_property.length === 0 ? r.inventory?.products[0]?.sku : null,
           r.state,
           r.inventory.quantity_on_property.length === 0 ? r.quantity : null,
           r.tags,
           r.inventory.price_on_property.length === 0 ? r.price.amount / r.price.divisor : null,
+          r.inventory.price_on_property.length === 0 ? r.price.currency_code : null,
         ]
 
-        const trailingData = [r.listing_id]
+        const trailingData = [
+          r.has_variations
+            ? null
+            : r.inventory.products.find((p: IProduct) => !p.is_deleted)?.product_id,
+          r.listing_id,
+        ]
         // If it has variations
         if (r.has_variations) {
           r.inventory.products.forEach((p: IProduct, i: number) => {

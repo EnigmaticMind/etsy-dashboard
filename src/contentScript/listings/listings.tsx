@@ -11,7 +11,18 @@ import UploadIcon from '@mui/icons-material/Upload'
 import packageData from '../../../package.json'
 import ContentListenersComponent from '../contentListeners/contentListeners'
 import { FetchListingsMessageType, PutListingsMessageType } from '../../constants/global'
-import { Table, Typography, styled } from '@mui/joy'
+import {
+  DialogContent,
+  DialogTitle,
+  Grid,
+  ModalClose,
+  ModalDialog,
+  Sheet,
+  Stack,
+  Table,
+  Typography,
+  styled,
+} from '@mui/joy'
 import Papa, { ParseError } from 'papaparse'
 import LoadingModalComponent from './loadingModalComponent'
 import TextualModalComponent from './textualModal'
@@ -35,6 +46,7 @@ function ListingsComponent() {
   const [csvErrors, setCsvErrors] = React.useState<Papa.ParseError[]>([])
 
   const exportCSV = async function () {
+    console.log('~~ Export CSV')
     setIsLoading(true)
     try {
       const pathname = document.location.pathname
@@ -50,6 +62,9 @@ function ListingsComponent() {
       } else {
         listingID = lastSegment
       }
+
+      console.log(params)
+      console.log(listingID)
 
       await chrome.runtime.sendMessage(
         {
@@ -76,6 +91,7 @@ function ListingsComponent() {
   }
 
   const importCSV = function (event: any) {
+    console.log('~~ Import CSV')
     setIsLoading(true)
     try {
       Papa.parse(event.target.files[0], {
@@ -89,6 +105,7 @@ function ListingsComponent() {
         newline: '\r\n',
         skipEmptyLines: false,
         encoding: '',
+        dynamicTyping: true,
         complete: async function (results: Papa.ParseResult<unknown>) {
           if (results.errors.length > 0) {
             setCsvErrors(results.errors)
@@ -106,36 +123,6 @@ function ListingsComponent() {
     } catch (err) {
       setIsLoading(false)
     }
-    // await chrome.runtime.sendMessage({
-    //   action: startLoaderAction,
-    // })
-    // Papa.parse(event.target.files[0], {
-    //   quoteChar: '"',
-    //   escapeChar: '"',
-    //   delimiter: ',',
-    //   header: false,
-    //   newline: '\r\n',
-    //   skipEmptyLines: false,
-    //   complete: function (results: Papa.ParseResult<unknown>) {
-    //     if (results.errors) {
-    //       results.errors.forEach((error) => {
-    //         sendSnackbar(error.message)
-    //       })
-    //       return
-    //     }
-    //     console.log(results.data)
-    //   },
-    // })
-    // // await chrome.runtime.sendMessage(
-    // //   { type: PutListingsMessageType, uploadedFile: event.target.files[0] },
-    // //   function (response) {
-    // //     console.log('~~ Finished')
-    // //   },
-    // // )
-    // await chrome.runtime.sendMessage({
-    //   action: stopLoaderAction,
-    // })
-    // console.log('~~ Finished Import')
   }
 
   return (
@@ -143,30 +130,30 @@ function ListingsComponent() {
       <div className="col-xs-12 col-lg-9 col-tv-10">
         <LoadingModalComponent isLoading={isLoading}></LoadingModalComponent>
         <TextualModalComponent isOpen={isOpen} setIsOpen={setIsOpen}>
-          <div>
-            <Typography id="modal-title" level="h2">
-              CSV Errors
-            </Typography>
-            <br />
-            <Table>
-              <thead>
-                <tr>
-                  <th>Row</th>
-                  <th>Message</th>
-                </tr>
-              </thead>
-              <tbody>
-                {csvErrors.map((error: ParseError) => {
-                  return (
-                    <tr>
-                      <td>{error.row}</td>
-                      <td>{error.message}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </Table>
-          </div>
+          <ModalDialog layout="center">
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <DialogTitle>CSV Errors</DialogTitle>
+            <DialogContent>
+              <Table stickyHeader>
+                <thead>
+                  <tr>
+                    <th>Row</th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {csvErrors.map((error: ParseError) => {
+                    return (
+                      <tr>
+                        <td>{error.row}</td>
+                        <td>{error.message}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </Table>
+            </DialogContent>
+          </ModalDialog>
         </TextualModalComponent>
 
         <ButtonGroup color="primary">
@@ -182,7 +169,14 @@ function ListingsComponent() {
             style={{ display: 'flex' }}
           >
             Upload CSV&nbsp;
-            <VisuallyHiddenInput type="file" accept=".csv" onChange={importCSV} />
+            <VisuallyHiddenInput
+              type="file"
+              accept=".csv"
+              onClick={function (event: any) {
+                event.target.value = ''
+              }}
+              onChange={importCSV}
+            />
           </Button>
         </ButtonGroup>
       </div>

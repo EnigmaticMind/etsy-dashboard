@@ -1,4 +1,4 @@
-import fetchEtsyToken, { IToken } from './../fetchEtsyToken'
+import fetchEtsyToken, { IToken } from './fetchEtsyToken'
 
 // import { listingsURL } from './../../constants/global'
 import { sendSnackbar, genericError } from '../actionMessaging'
@@ -156,7 +156,11 @@ export default async function fetchListings(
 
     try {
       const response = await fetch(url, requestOptions)
-      resolve((await response.json()) as IListings)
+      if (response.ok) {
+        resolve((await response.json()) as IListings)
+        return
+      }
+      reject(sendSnackbar((await response.json())?.error) || genericError)
     } catch (err) {
       reject(sendSnackbar(genericError))
     }

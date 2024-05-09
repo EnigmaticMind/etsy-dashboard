@@ -7,7 +7,7 @@ import {
   etsyTokenURL,
   storageTokenName,
 } from '../../constants/authentication'
-import { IToken } from './index'
+import { IToken } from './fetchEtsyToken'
 import { sendSnackbar, genericError } from '../actionMessaging'
 
 // Start: Code Verifier
@@ -101,7 +101,9 @@ export default async function beginAuthFlow(): Promise<IToken> {
         if (response.ok) {
           await chrome.storage.local.set({ [storageTokenName]: body })
           resolve(body)
+          return
         }
+        reject(sendSnackbar(body?.error || genericError))
       } catch (err) {
         reject(sendSnackbar(genericError))
       }

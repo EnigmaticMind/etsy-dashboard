@@ -30,7 +30,7 @@ export default async function fetchEtsyToken(): Promise<IToken> {
   return new Promise(async function (resolve) {
     // Check session storage first for token
     const res = await (chrome.storage.local.get() as Promise<any>)
-    let token = res[storageTokenName] as IToken
+    let token = res[storageTokenName] as IToken | null
 
     console.log(token)
 
@@ -41,7 +41,7 @@ export default async function fetchEtsyToken(): Promise<IToken> {
       console.log(token)
     }
 
-    if (!token?.access_token) {
+    if (!token || !token?.access_token) {
       // Send request for user permissions
       console.log(`Request auth pop up`)
       await requestAuthPopup()

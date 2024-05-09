@@ -273,7 +273,7 @@
     opacity: 0;
   }
 }
-.loading-container,
+.loading-bar-container,
 .loading {
   height: 100px;
   position: relative;
@@ -281,7 +281,7 @@
   border-radius: 100%;
 }
 
-.loading-container {
+.loading-bar-container {
   margin: 20px;
 }
 
@@ -298,11 +298,11 @@
   transform-origin: 50% 50%;
 }
 
-.loading-container:hover .loading {
+.loading-bar-container:hover .loading {
   border-color: transparent #e45635 transparent #e45635;
 }
-.loading-container:hover .loading,
-.loading-container .loading {
+.loading-bar-container:hover .loading,
+.loading-bar-container .loading {
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -ms-transition: all 0.5s ease-in-out;

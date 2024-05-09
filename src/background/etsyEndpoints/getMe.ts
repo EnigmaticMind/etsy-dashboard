@@ -1,7 +1,7 @@
-import fetchEtsyToken, { IToken } from './../fetchEtsyToken'
+import fetchEtsyToken, { IToken } from './fetchEtsyToken'
 
-import { etsyBaseURL } from './../../constants/global'
-import { clientID } from './../../constants/authentication'
+import { etsyBaseURL } from '../../constants/global'
+import { clientID } from '../../constants/authentication'
 import { sendSnackbar, genericError } from '../actionMessaging'
 
 export interface IMe {
@@ -27,7 +27,12 @@ export default async function getMe(): Promise<IMe> {
       const response = await fetch(`${etsyBaseURL}/users/me`, requestOptions)
       const body = await response.json()
 
-      resolve(body as IMe)
+      if (response.ok) {
+        resolve(body as IMe)
+        return
+      }
+
+      reject(sendSnackbar(body?.error) || genericError)
     } catch (err) {
       reject(sendSnackbar(genericError))
     }

@@ -17,7 +17,6 @@ const LoadingModalComponent: FC<{ isLoading: boolean }> = function ({ isLoading 
       <Sheet
         variant="outlined"
         sx={{
-          maxWidth: 500,
           borderRadius: 'md',
           p: 3,
           boxShadow: 'lg',
@@ -38,7 +37,7 @@ const LoadingModalComponent: FC<{ isLoading: boolean }> = function ({ isLoading 
               <div className="wave-loader"></div>
               <div className="wave-loader"></div>
             </div> */}
-        <div className="loading-container">
+        <div className="loading-bar-container">
           <div className="loading"></div>
           <div id="loading-text">loading</div>
         </div>
