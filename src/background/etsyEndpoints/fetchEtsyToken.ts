@@ -1,5 +1,5 @@
-import { storageTokenName } from '../../constants/authentication'
-import { popAuthAction } from '../../constants/global'
+import { STORAGETOKENNAME } from '../../constants/authentication'
+import { ACTIONPOPAUTH } from '../../constants/global'
 import beginAuthFlow from './beginAuthFlow'
 import refreshToken from './refreshToken'
 
@@ -18,7 +18,7 @@ async function requestAuthPopup() {
     chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       // TODO: Better handler of no tab?
       const res = await chrome.tabs.sendMessage(tabs[0].id ?? 0, {
-        action: popAuthAction,
+        action: ACTIONPOPAUTH,
       })
 
       resolve(res)
@@ -30,7 +30,7 @@ export default async function fetchEtsyToken(): Promise<IToken> {
   return new Promise(async function (resolve) {
     // Check session storage first for token
     const res = await (chrome.storage.local.get() as Promise<any>)
-    let token = res[storageTokenName] as IToken | null
+    let token = res[STORAGETOKENNAME] as IToken | null
 
     console.log(token)
 

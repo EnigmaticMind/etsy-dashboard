@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Snackbar from '@mui/joy/Snackbar'
-import { snackbarAction } from '../../constants/global'
+import { ACTIONSNACKBAR } from '../../constants/global'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 
 import { useEffect } from 'react'
@@ -42,7 +42,7 @@ function SnackbarComponent() {
   function receiveSnack(request: any, _: any, sendResponse: any) {
     console.log(`Receiving component action: ${request.action}`)
     switch (request.action) {
-      case snackbarAction:
+      case ACTIONSNACKBAR:
         setOpen(true)
         setMessage(request.message)
         break

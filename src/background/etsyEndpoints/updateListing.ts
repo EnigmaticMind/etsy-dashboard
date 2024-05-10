@@ -1,5 +1,5 @@
-import { clientID } from '../../constants/authentication'
-import { etsyBaseURL } from '../../constants/global'
+import { CLIENTID } from '../../constants/authentication'
+import { ETSYBASEURL } from '../../constants/global'
 import sendSnackbar, { genericError } from '../actionMessaging'
 import fetchEtsyToken, { IToken } from './fetchEtsyToken'
 import { IListings } from './fetchListings'
@@ -18,7 +18,7 @@ export default async function updateListing(
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': clientID,
+        'x-api-key': CLIENTID,
         Authorization: `Bearer ${token.access_token}`,
       },
       body: JSON.stringify({
@@ -73,7 +73,7 @@ export default async function updateListing(
       }),
     }
 
-    const url = `${etsyBaseURL}shops/${shop_id}/listings/${listing_id}`
+    const url = `${ETSYBASEURL}shops/${shop_id}/listings/${listing_id}`
 
     try {
       const response = await fetch(url, requestOptions)

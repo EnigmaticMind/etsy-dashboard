@@ -1,4 +1,4 @@
-import { snackbarAction, startLoaderAction, stopLoaderAction } from '../constants/global'
+import { ACTIONSNACKBAR, ACTIONSTARTLOADER, ACTIONSTOPLOADER } from '../constants/global'
 
 export const genericError = 'Problem connecting to Etsy try again...'
 
@@ -6,7 +6,7 @@ export const sendSnackbar = async function (message: string) {
   chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
     // TODO: Better handler of no tab?
     const res = await chrome.tabs.sendMessage(tabs[0].id ?? 0, {
-      action: snackbarAction,
+      action: ACTIONSNACKBAR,
       message,
     })
   })
@@ -17,7 +17,7 @@ export const startLoader = async function () {
   chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
     // TODO: Better handler of no tab?
     const res = await chrome.tabs.sendMessage(tabs[0].id ?? 0, {
-      action: startLoaderAction,
+      action: ACTIONSTARTLOADER,
     })
   })
   return true
@@ -27,7 +27,7 @@ export const stopLoader = async function () {
   chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
     // TODO: Better handler of no tab?
     const res = await chrome.tabs.sendMessage(tabs[0].id ?? 0, {
-      action: stopLoaderAction,
+      action: ACTIONSTOPLOADER,
     })
   })
   return true
@@ -36,7 +36,7 @@ export const stopLoader = async function () {
 export default sendSnackbar
 
 // import { rAuthFetchToken } from '../constants/authentication'
-// import { FetchListingsMessageType } from '../constants/global'
+// import { MESSAGEFETCHLISTING } from '../constants/global'
 
 // import fetchEtsyToken from './fetchEtsyToken/index'
 // import fetchListings from './fetchListings/index'

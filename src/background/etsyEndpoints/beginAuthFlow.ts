@@ -1,11 +1,11 @@
 import {
-  authScopes,
-  clientID,
-  codeChallengeMethod,
-  stateCode,
-  etsyConnectURL,
-  etsyTokenURL,
-  storageTokenName,
+  AUTHSCOPES,
+  CLIENTID,
+  CODECHALLENGEMETHOD,
+  STATECODE,
+  ETSYCONNECTURL,
+  ETSYTOKENURL,
+  STORAGETOKENNAME,
 } from '../../constants/authentication'
 import { IToken } from './fetchEtsyToken'
 import { sendSnackbar, genericError } from '../actionMessaging'
@@ -53,14 +53,14 @@ export default async function beginAuthFlow(): Promise<IToken> {
     const authParams: any = {
       response_type: 'code',
       redirect_uri: redirectURL,
-      scope: authScopes.join('%20'),
-      client_id: clientID,
+      scope: AUTHSCOPES.join('%20'),
+      client_id: CLIENTID,
       code_challenge: await generateCodeChallengeFromVerifier(codeVerifier),
-      code_challenge_method: codeChallengeMethod,
-      state: stateCode,
+      code_challenge_method: CODECHALLENGEMETHOD,
+      state: STATECODE,
     }
 
-    const url = `${etsyConnectURL}?${Object.keys(authParams)
+    const url = `${ETSYCONNECTURL}?${Object.keys(authParams)
       .map((k: string) => `${k}=${authParams[k]}`)
       .join('&')}`
 
@@ -69,9 +69,9 @@ export default async function beginAuthFlow(): Promise<IToken> {
       const urlSearchParams = new URLSearchParams(url.search)
       const code = urlSearchParams.get('code')
       const state = urlSearchParams.get('state')
-      const tokenUrl = etsyTokenURL
+      const tokenUrl = ETSYTOKENURL
 
-      if (state !== stateCode) {
+      if (state !== STATECODE) {
         reject(sendSnackbar(genericError))
       }
 
@@ -99,7 +99,7 @@ export default async function beginAuthFlow(): Promise<IToken> {
 
         // Extract the access token from the response access_token data field
         if (response.ok) {
-          await chrome.storage.local.set({ [storageTokenName]: body })
+          await chrome.storage.local.set({ [STORAGETOKENNAME]: body })
           resolve(body)
           return
         }

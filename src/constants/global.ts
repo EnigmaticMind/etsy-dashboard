@@ -1,9 +1,9 @@
-export const snackbarAction = 'SNACKACT'
-export const startLoaderAction = 'STARTLOADING'
-export const stopLoaderAction = 'STOPLOADING'
-export const popAuthAction = 'POPAUTHACT'
+export const ACTIONSNACKBAR = 'SNACKACT'
+export const ACTIONSTARTLOADER = 'STARTLOADING'
+export const ACTIONSTOPLOADER = 'STOPLOADING'
+export const ACTIONPOPAUTH = 'POPAUTHACT'
 
-export const FetchListingsMessageType = 'FETCHLISTINGS'
-export const PutListingsMessageType = 'PUTLISTINGS'
+export const MESSAGEFETCHLISTING = 'FETCHLISTINGS'
+export const MESSAGEPUTLISTING = 'PUTLISTINGS'
 
-export const etsyBaseURL = 'https://openapi.etsy.com/v3/application/'
+export const ETSYBASEURL = 'https://openapi.etsy.com/v3/application/'

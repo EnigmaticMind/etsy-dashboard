@@ -2,8 +2,8 @@ import fetchEtsyToken, { IToken } from './fetchEtsyToken'
 
 // import { listingsURL } from './../../constants/global'
 import { sendSnackbar, genericError } from '../actionMessaging'
-import { clientID } from '../../constants/authentication'
-import { etsyBaseURL } from '../../constants/global'
+import { CLIENTID } from '../../constants/authentication'
+import { ETSYBASEURL } from '../../constants/global'
 
 enum Languages {
   'en-US',
@@ -132,7 +132,7 @@ export default async function fetchListings(
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': clientID,
+        'x-api-key': CLIENTID,
         Authorization: `Bearer ${token.access_token}`,
       },
     }
@@ -140,14 +140,14 @@ export default async function fetchListings(
     let url: string = ''
     if (listing_id) {
       url =
-        `${etsyBaseURL}listings/batch?` +
+        `${ETSYBASEURL}listings/batch?` +
         new URLSearchParams({
           listing_ids: listing_id,
           includes: 'Inventory',
         })
     } else {
       url =
-        `${etsyBaseURL}shops/${shop_id}/listings?` +
+        `${ETSYBASEURL}shops/${shop_id}/listings?` +
         new URLSearchParams({
           state: state || 'draft',
           includes: 'Inventory',

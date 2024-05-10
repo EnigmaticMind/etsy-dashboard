@@ -22,21 +22,6 @@ const LoadingModalComponent: FC<{ isLoading: boolean }> = function ({ isLoading 
           boxShadow: 'lg',
         }}
       >
-        {/* <Typography id="modal-title" level="h2">
-              Loading
-            </Typography> */}
-        {/* <div className="center-loader">
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-              <div className="wave-loader"></div>
-            </div> */}
         <div className="loading-bar-container">
           <div className="loading"></div>
           <div id="loading-text">loading</div>

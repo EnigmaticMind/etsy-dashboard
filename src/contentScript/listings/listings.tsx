@@ -10,19 +10,8 @@ import UploadIcon from '@mui/icons-material/Upload'
 
 import packageData from '../../../package.json'
 import ContentListenersComponent from '../contentListeners/contentListeners'
-import { FetchListingsMessageType, PutListingsMessageType } from '../../constants/global'
-import {
-  DialogContent,
-  DialogTitle,
-  Grid,
-  ModalClose,
-  ModalDialog,
-  Sheet,
-  Stack,
-  Table,
-  Typography,
-  styled,
-} from '@mui/joy'
+import { MESSAGEFETCHLISTING, MESSAGEPUTLISTING } from '../../constants/global'
+import { DialogContent, DialogTitle, ModalClose, ModalDialog, Table, styled } from '@mui/joy'
 import Papa, { ParseError } from 'papaparse'
 import LoadingModalComponent from './loadingModalComponent'
 import TextualModalComponent from './textualModal'
@@ -68,7 +57,7 @@ function ListingsComponent() {
 
       await chrome.runtime.sendMessage(
         {
-          type: FetchListingsMessageType,
+          type: MESSAGEFETCHLISTING,
           state: params['state'] || null,
           listing_id: listingID || null,
         },
@@ -112,7 +101,7 @@ function ListingsComponent() {
             setIsOpen(true)
           } else {
             await chrome.runtime.sendMessage({
-              type: PutListingsMessageType,
+              type: MESSAGEPUTLISTING,
               rows: results.data,
             })
           }

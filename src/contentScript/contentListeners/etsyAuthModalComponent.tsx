@@ -10,7 +10,7 @@ import ModalClose from '@mui/joy/ModalClose'
 import Typography from '@mui/joy/Typography'
 import Sheet from '@mui/joy/Sheet'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
-import { popAuthAction } from '../../constants/global'
+import { ACTIONPOPAUTH } from '../../constants/global'
 
 // EtsyAuthModalComponent
 function EtsyAuthModalComponent() {
@@ -21,7 +21,7 @@ function EtsyAuthModalComponent() {
   function receiveComponentAction(request: any, _: any, sendResponse: any) {
     return new Promise(function (resolve, reject) {
       switch (request.action) {
-        case popAuthAction:
+        case ACTIONPOPAUTH:
           setOpen(true)
           setCb(() => (tx: any) => {
             resolve(sendResponse(tx))

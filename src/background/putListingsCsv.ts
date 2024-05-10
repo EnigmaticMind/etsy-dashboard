@@ -59,7 +59,7 @@ export default async function putListingsCsv(rows: IRow[]) {
           // Skip this row if no listing id or a variation
           if (!Number.isInteger(row.listing_id) || !row.listing_id) return
           const shop_id = (await getMe()).shop_id
-          // await updateListing(row.listing_id, shop_id, row)
+          await updateListing(row.listing_id, shop_id, row)
           await updateListingInventory(row.listing_id, row)
         })
       resolve(undefined)

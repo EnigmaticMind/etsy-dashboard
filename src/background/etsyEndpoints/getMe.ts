@@ -1,7 +1,7 @@
 import fetchEtsyToken, { IToken } from './fetchEtsyToken'
 
-import { etsyBaseURL } from '../../constants/global'
-import { clientID } from '../../constants/authentication'
+import { ETSYBASEURL } from '../../constants/global'
+import { CLIENTID } from '../../constants/authentication'
 import { sendSnackbar, genericError } from '../actionMessaging'
 
 export interface IMe {
@@ -18,13 +18,13 @@ export default async function getMe(): Promise<IMe> {
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': clientID,
+        'x-api-key': CLIENTID,
         Authorization: `Bearer ${token.access_token}`,
       },
     }
 
     try {
-      const response = await fetch(`${etsyBaseURL}/users/me`, requestOptions)
+      const response = await fetch(`${ETSYBASEURL}/users/me`, requestOptions)
       const body = await response.json()
 
       if (response.ok) {
